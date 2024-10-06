@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Astronomy Picture Of the Day</title>
+
+    <!-- Reset CSS -->
+    <link rel="stylesheet" href="./css/reset.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Logo header -->
+    <header>
+        <div class="logo">
+            <img src="./assets/nasa_apodsvg.svg" alt="NASA Astronomy Picture of the Day logo">
+        </div>
+    </header>
+
+    <!-- Search form -->
+    <section class="input">
+        <form id="date-input">
+            <input type="date" name="date" id="date" required>
+            <button id="search-btn" type="submit">
+                Search<i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+    </section>
+
+    <!-- Information container -->
+     <main>
+        <div class="main-container">
+
+            <!-- Main image -->
+            <div class="main_img">
+                <img src="./assets/placeholder.jpg" alt="NASA Astronomy Picture of the Day" id="APOD_IMG">
+            </div>
+
+            <!-- Information -->
+             <div class="main_txt_wrap">
+                <h1 id="apod_title"></h1>
+                <span id="apod_attr"></span>
+                <p id="apod_details"></p>
+             </div>
+
+             <!-- Add to favorites -->
+                <div class="fav_btn">
+                    <button id="fav_btn">
+                        Add to favorites <i class="fa-regular fa-star"></i> 
+                    </button>
+                </div>
+        </div>
+     </main>
+
+     <section class="favorites">
+        <h2>Favorites</h2>
+        <div class="apod_fav" id="APOD_FAV">
+            <!-- Favorites will be displayed here -->
+        </div>
+     </section>
+
+     <!-- footer -->
+        <footer>
+            <p>Copyright NASA Astronomy Picture of the Day &copy; 2024</p>
+        </footer>
+
+</body>
+
+</html>
