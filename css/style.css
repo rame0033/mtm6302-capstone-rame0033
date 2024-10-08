@@ -1,0 +1,218 @@
+/* GOOGLE FONT - ARCHIVO */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    font-family: 'Archivo', sans-serif;
+    color: #D9D9D9;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    background-color: #1E1C1C;
+}
+
+header{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+/* LOGO SIZING AND POSITION */
+.logo img{
+    width:15rem;
+    object-fit:contain;
+    padding:2rem;
+}
+
+/* FORM STYLE */
+form{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 0rem 2rem 2rem 2rem;
+    justify-content:center;
+    background-color:#1E1C1C;
+    border-radius:1rem;
+}
+
+/* Font size for label */
+form label{
+    font-size:1.5rem;
+    margin: 1rem 1rem 0.25rem 1rem;
+}
+
+/* Form input styling */
+form input{
+    width:66%;
+    padding:0.9rem;
+    margin:1rem;
+    border-radius:0.5rem;
+    border:0.25rem;
+    background-color:#D9D9D9;
+}
+
+/* Date input font style */
+form input[type="date"]{
+    font-family: Archivo;
+    font-size:1.4rem;
+    color:#1E1C1C
+}
+
+/* Submit button styling */
+form button{
+    padding:0.5rem 1rem;
+    margin:1rem;
+    border-radius:0.5rem;
+    border:0.25rem solid #D9D9D9;
+    background-color:#1E1C1C;
+    color:#D9D9D9;
+    font-size:1.35rem;
+    cursor:pointer;
+    transition: all 0.3s ease;
+}
+
+/* Love HAte - Button */
+form button:hover{
+    background-color:#D9D9D9;
+    color:#1E1C1C;
+}
+
+form button:active{
+    transform:scale(0.9);
+}
+
+/* MAIN */
+.main-container{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:2rem 0.75rem;
+}
+
+/* IMAGE WRAP*/
+.main_img{
+    display:flex;
+    justify-content: center;
+}
+
+/* APOD IMG */
+#APOD_IMG{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* TEXT WRAP */
+.main_txt_wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 2rem 0.5rem;
+}
+
+/* Heading 1 */
+main h1{
+    font-size:1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Photo attribute */
+span{
+    font-size:1.5rem;
+    font-weight: 400;
+    padding-block:1rem;
+    text-align: center;
+}
+
+main p{
+    text-align: center;
+    line-height: 1.5rem;
+}
+
+/* fav btn */
+.fav_btn button{
+    padding:0.5rem 1rem;
+    margin-top:1.5rem;
+    border-radius:0.5rem;
+    background-color:#d9d9d9;
+    color:#1E1C1C;
+    font-size:1.25rem;
+    font-weight: 500;
+    transition: transform 0.3s ease;
+}
+
+/* fav btn active*/
+.fav_btn button:active{
+    transform: scale(0.9);
+}
+
+/* FAVORITES SECTION */
+.favorites h2{
+    font-size:1.5rem;
+    font-weight: 600;
+    text-align: center;
+    padding:1rem;
+}
+
+footer{
+    display:flex;
+    text-align: center;
+    padding:1rem;
+    font-size: 0.7rem;
+}
+
+/* MEDIA QUERIES */
+
+/* Tablet size */
+@media screen and (min-width:768px){
+
+    main h1{
+        font-size:2rem;
+    }
+
+    main p{
+        font-size:1.25rem;
+    }
+
+    .favorites h2{
+        font-size:2rem;
+    }
+}
+
+/* Desktop size */
+@media screen and (min-width:1024px){
+
+    .main-container{
+        flex-direction:row;
+        max-width:1200px;
+    }
+
+    #APOD_IMG{
+        aspect-ratio: 4 / 3;
+    }
+
+    .main_txt_wrap{
+        width: 150%;
+        border: 1px solid #dcdcdc;
+        border-left: none;
+        border-radius: 0.75rem;
+        padding-inline:2rem;
+        align-items: flex-start;
+    }
+
+    main h1{
+        font-size: 1.5rem;
+        text-align: left;
+    }
+
+    main span{
+        font-size:1.25rem;
+        text-align: left;
+    }
+
+    main p{
+        font-size: 0.9rem;
+        text-align: left;
+    }
+}
