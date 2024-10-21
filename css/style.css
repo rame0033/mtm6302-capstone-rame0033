@@ -155,6 +155,62 @@ main p{
     padding:1rem;
 }
 
+/* Favorites' card container */
+.apod_fav{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:1rem;
+    padding:1rem;
+    max-width:1235px;
+}
+
+/* Favorites' card style */
+.card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:400px;
+}
+
+/* Card image */
+.card-img{
+    width:100%;
+    aspect-ratio: 16 / 9;
+    object-fit:cover;
+    border-radius:0.75rem;
+}
+
+/* Alignment for card title */
+.card_textwrap{
+    display:flex;
+    align-items:center;
+    padding-block:1rem;
+    gap: 1rem;
+}
+
+/* Card title */
+.card h3{
+    font-weight: 600;
+}
+
+/* Delete button */
+#del_btn{
+    padding: 0.25rem 0.5rem ;
+    color: #ffffff;
+    background-color: #1E1C1C;
+    border: 1px solid #ffffff;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Delete button on click */
+#del_btn:active{
+    color: #1E1C1C;
+    background-color: #ffffff;
+}
+
 footer{
     display:flex;
     text-align: center;
