@@ -29,4 +29,4 @@ As you load the main page, the default value of the `date input` will be the cur
 ### Resources
 - [MeyerWeb CSS Reset](https://meyerweb.com/eric/tools/css/reset/)
 
--[Google Font - Archivo](https://fonts.google.com/specimen/Archivo)
+- [Google Font - Archivo](https://fonts.google.com/specimen/Archivo)
