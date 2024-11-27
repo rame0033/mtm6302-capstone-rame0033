@@ -21,7 +21,7 @@ let favorites = [];
 
 //Show default message when there are no favorites
 const defaultFav = document.createElement("p");
-defaultFav.textContent = "Your current APOD favorites is currently empty!"; 
+defaultFav.textContent = "Your current APOD favorites is currently empty!";
 favContainer.appendChild(defaultFav);
 
 // Set default date to current day
@@ -43,6 +43,7 @@ function fetchAPOD(date) {
             if (data.media_type === "image") {
                 mainIMG.src = data.url;
                 mainIMG.alt = data.title;
+                mainIMG.dataset.hdurl = data.hdurl;
                 mainIMG.classList.remove('nasa-logo'); // Remove the class if it was previously added
 
                 // Make the image clickable to view HD version
@@ -171,11 +172,13 @@ function renderFavorites() {
     }
 }
 
+
 //Add to favorites
 favBtn.addEventListener("click", function () {
     const favDate = dateForm.querySelector("input").value;
     const favTitle = h1Title.textContent;
     const favIMG = mainIMG.src;
+    const favHDURL = mainIMG.dataset.hdurl;
 
     // Check if the APOD is already in favorites
     const isFavorite = favorites.find(fav => fav.date === favDate);
@@ -185,9 +188,59 @@ favBtn.addEventListener("click", function () {
         favorites.push({
             date: favDate,
             title: favTitle,
-            img: favIMG
+            attribute: attribute.textContent,
+            img: favIMG,
+            hdurl: favHDURL,
+            explanation: description.textContent
         });
         console.log(favorites);
         renderFavorites();
     }
-})
+});
+
+// Show list item to main container when clicked
+favContainer.addEventListener("click", function (e) {
+    if (e.target.closest("li")) {
+        const favTitle = e.target.closest("li").querySelector("h3").textContent;
+        const favIndex = favorites.findIndex(fav => fav.title === favTitle);
+        if (favIndex !== -1) {
+            const fav = favorites[favIndex];
+            h1Title.textContent = fav.title;
+            mainIMG.src = fav.img;
+            mainIMG.alt = fav.title;
+            attribute.textContent = fav.attribute || "Public Domain"; // Ensure the property exists
+            description.textContent = fav.explanation || "No description available."; // Ensure the property exists
+
+            // Make the image clickable to view HD version
+            mainIMG.style.cursor = 'pointer';
+            mainIMG.onclick = () => {
+                const overlay = document.createElement("div");
+                overlay.classList.add('overlay');
+
+                const hdContainer = document.createElement("div");
+                hdContainer.classList.add('hd-container');
+
+                const hdIMG = document.createElement("img");
+                hdIMG.src = fav.hdurl; // Use the HD URL from the favorite item
+
+                // Append image to overlay
+                hdContainer.appendChild(hdIMG);
+                overlay.appendChild(hdContainer);
+
+                // Add close button
+                const closeButton = document.createElement("button");
+                closeButton.innerHTML = '<i class="fa-solid fa-square-xmark"></i>';
+                closeButton.classList.add('close-button');
+                closeButton.addEventListener("click", function () {
+                    overlay.remove();
+                });
+
+                // Append close button to overlay
+                overlay.appendChild(closeButton);
+
+                // Append overlay to body
+                document.body.appendChild(overlay);
+            };
+        }
+    }
+});
