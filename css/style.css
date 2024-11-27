@@ -192,6 +192,7 @@ main p{
 /* Card title */
 .card h3{
     font-weight: 600;
+    flex-grow: 1;
 }
 
 /* Delete button */
