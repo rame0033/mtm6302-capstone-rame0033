@@ -34,65 +34,70 @@ const defaultDate = `${yyyy}-${mm}-${dd}`;
 dateForm.querySelector("input").value = defaultDate;
 
 // Fetch and display APOD data
-function fetchAPOD(date) {
+async function fetchAPOD(date) {
     const url = `https://api.nasa.gov/planetary/apod?api_key=${APIKey}&date=${date}`;
+    console.log(`Fetching APOD data for date: ${date}`); // Logging
 
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data.media_type === "image") {
-                mainIMG.src = data.url;
-                mainIMG.alt = data.title;
-                mainIMG.dataset.hdurl = data.hdurl;
-                mainIMG.classList.remove('nasa-logo'); // Remove the class if it was previously added
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('APOD data fetched:', data); // Logging
 
-                // Make the image clickable to view HD version
-                mainIMG.style.cursor = 'pointer';
-                mainIMG.onclick = () => {
-                    const overlay = document.createElement("div");
-                    overlay.classList.add('overlay');
+        if (data.media_type === "image") {
+            mainIMG.src = data.url;
+            mainIMG.alt = data.title;
+            mainIMG.dataset.hdurl = data.hdurl;
+            mainIMG.classList.remove('nasa-logo'); // Remove the class if it was previously added
 
-                    const hdContainer = document.createElement("div");
-                    hdContainer.classList.add('hd-container');
+            // Make the image clickable to view HD version
+            mainIMG.style.cursor = 'pointer';
+            mainIMG.onclick = () => {
+                const overlay = document.createElement("div");
+                overlay.classList.add('overlay');
 
-                    const hdIMG = document.createElement("img");
-                    hdIMG.src = data.hdurl;
+                const hdContainer = document.createElement("div");
+                hdContainer.classList.add('hd-container');
 
-                    // Append image to overlay
-                    hdContainer.appendChild(hdIMG);
-                    overlay.appendChild(hdContainer);
+                const hdIMG = document.createElement("img");
+                hdIMG.src = data.hdurl;
 
-                    // Add close button
-                    const closeButton = document.createElement("button");
-                    closeButton.innerHTML = '<i class="fa-solid fa-square-xmark"></i>';
-                    closeButton.classList.add('close-button');
-                    closeButton.addEventListener("click", function () {
-                        overlay.remove();
-                    });
+                // Append image to overlay
+                hdContainer.appendChild(hdIMG);
+                overlay.appendChild(hdContainer);
 
-                    // Append close button to overlay
-                    overlay.appendChild(closeButton);
+                // Add close button
+                const closeButton = document.createElement("button");
+                closeButton.innerHTML = '<i class="fa-solid fa-square-xmark"></i>';
+                closeButton.classList.add('close-button');
+                closeButton.addEventListener("click", function () {
+                    overlay.remove();
+                });
 
-                    // Append overlay to body
-                    document.body.appendChild(overlay);
-                };
-            } else {
-                // If media type is not an image, display NASA logo
-                mainIMG.src = "https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg";
-                mainIMG.alt = "NASA Logo";
-                mainIMG.classList.add('nasa-logo'); // Add the class to the NASA logo
+                // Append close button to overlay
+                overlay.appendChild(closeButton);
 
-                // Remove the click event if it's not an image
-                mainIMG.style.cursor = 'default';
-                mainIMG.onclick = null;
-            }
-            h1Title.textContent = data.title;
-            attribute.textContent = data.copyright || "Public Domain";
-            description.textContent = data.explanation;
-        })
-        .catch(error => {
-            console.error("Error fetching APOD data:", error);
-        });
+                // Append overlay to body
+                document.body.appendChild(overlay);
+            };
+        } else {
+            // If media type is not an image, display NASA logo
+            mainIMG.src = "https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg";
+            mainIMG.alt = "NASA Logo";
+            mainIMG.classList.add('nasa-logo'); // Add the class to the NASA logo
+
+            // Remove the click event if it's not an image
+            mainIMG.style.cursor = 'default';
+            mainIMG.onclick = null;
+        }
+        h1Title.textContent = data.title;
+        attribute.textContent = data.copyright || "Public Domain";
+        description.textContent = data.explanation;
+    } catch (error) {
+        console.error("Error fetching APOD data:", error);
+    }
 }
 
 // Fetch APOD data for today
@@ -112,6 +117,22 @@ dateForm.addEventListener("submit", function (e) {
     }
 });
 
+// Function to save favorites to localStorage
+function saveFavorites() {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    console.log('Favorites saved to localStorage:', favorites); // Logging
+}
+
+// Function to load favorites from localStorage
+function loadFavorites() {
+    const storedFavorites = localStorage.getItem('favorites');
+    if (storedFavorites) {
+        favorites = JSON.parse(storedFavorites);
+        console.log('Favorites loaded from localStorage:', favorites); // Logging
+        renderFavorites();
+    }
+}
+
 //Delete item from the array
 favContainer.addEventListener("click", function (e) {
     if (e.target.closest("button") && e.target.closest("button").id === "del_btn") {
@@ -120,6 +141,7 @@ favContainer.addEventListener("click", function (e) {
         if (favIndex !== -1) {
             favorites.splice(favIndex, 1);
             renderFavorites();
+            saveFavorites(); // Save to localStorage
             console.log("Item deleted from favorites!");
             console.log(favorites);
         }
@@ -172,7 +194,6 @@ function renderFavorites() {
     }
 }
 
-
 //Add to favorites
 favBtn.addEventListener("click", function () {
     const favDate = dateForm.querySelector("input").value;
@@ -195,6 +216,7 @@ favBtn.addEventListener("click", function () {
         });
         console.log(favorites);
         renderFavorites();
+        saveFavorites(); // Save to localStorage
     }
 });
 
@@ -208,6 +230,7 @@ favContainer.addEventListener("click", function (e) {
             h1Title.textContent = fav.title;
             mainIMG.src = fav.img;
             mainIMG.alt = fav.title;
+            mainIMG.dataset.hdurl = fav.hdurl; // Ensure the HD URL is set
             attribute.textContent = fav.attribute || "Public Domain"; // Ensure the property exists
             description.textContent = fav.explanation || "No description available."; // Ensure the property exists
 
@@ -243,4 +266,10 @@ favContainer.addEventListener("click", function (e) {
             };
         }
     }
+});
+
+// Load favorites from localStorage on page load
+document.addEventListener("DOMContentLoaded", function() {
+    loadFavorites();
+    fetchAPOD(defaultDate); // Ensure APOD data is fetched after loading favorites
 });
