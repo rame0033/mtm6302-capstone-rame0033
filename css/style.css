@@ -218,6 +218,48 @@ footer{
     font-size: 0.7rem;
 }
 
+/* Add styling for HD modal overlay */
+/* Overlay styling */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* HD container styling */
+.hd-container {
+    position: relative;
+}
+
+.hd-container img {
+    width: 100%;
+    height: 90vh;
+}
+
+/* Close button styling */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.close-button i {
+    pointer-events: none; /* Ensure the icon itself is not clickable */
+}
+
 /* MEDIA QUERIES */
 
 /* Tablet size */
@@ -249,7 +291,7 @@ footer{
     }
 
     .main_txt_wrap{
-        width: 150%;
+        max-width: 48%;
         border: 1px solid #dcdcdc;
         border-left: none;
         border-radius: 0.75rem;
