@@ -21,13 +21,13 @@ let favorites = [];
 
 //Show default message when there are no favorites
 const defaultFav = document.createElement("p");
-defaultFav.textContent = "No favorite APOD has been added yet!";
+defaultFav.textContent = "Your current APOD favorites is currently empty!"; 
 favContainer.appendChild(defaultFav);
 
 // Set default date to current day
 const today = new Date();
 const dd = String(today.getDate()).padStart(2, '0');
-const mm = String(today.getMonth() + 1).padStart(2, '0'); 
+const mm = String(today.getMonth() + 1).padStart(2, '0');
 const yyyy = today.getFullYear();
 const defaultDate = `${yyyy}-${mm}-${dd}`;
 
@@ -98,7 +98,7 @@ function fetchAPOD(date) {
 fetchAPOD(defaultDate);
 
 // Prevent page from refreshing and handle search
-dateForm.addEventListener("submit", function(e) {
+dateForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const date = dateForm.querySelector("input").value;
 
@@ -112,7 +112,7 @@ dateForm.addEventListener("submit", function(e) {
 });
 
 //Delete item from the array
-favContainer.addEventListener("click", function(e) {
+favContainer.addEventListener("click", function (e) {
     if (e.target.closest("button") && e.target.closest("button").id === "del_btn") {
         const favTitle = e.target.closest("div").querySelector("h3").textContent;
         const favIndex = favorites.findIndex(fav => fav.title === favTitle);
@@ -126,59 +126,67 @@ favContainer.addEventListener("click", function(e) {
 });
 
 // Render favorites in the UL container
-function renderFavorites(){
+function renderFavorites() {
     favContainer.innerHTML = "";
-    favorites.forEach(fav => {
-        
-        const listItem = document.createElement("li");
-        listItem.classList.add("card");
-        
-        const cardContent = document.createElement("div");
-        cardContent.classList.add("card-content");
+    if (favorites.length === 0) {
+        favContainer.appendChild(defaultFav);
+    } else {
+        favorites.forEach(fav => {
 
-        const favIMG = document.createElement("img");
-        favIMG.src = fav.img;
-        favIMG.alt = fav.title;
-        favIMG.classList.add("card-img");
+            const listItem = document.createElement("li");
+            listItem.classList.add("card");
 
-        const favTitle = document.createElement("h3");
-        favTitle.textContent = fav.title;
-        favTitle.classList.add("card-title");
+            const cardContent = document.createElement("div");
+            cardContent.classList.add("card-content");
 
-        const deleteBtn = document.createElement("button");
-        deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
-        deleteBtn.id = "del_btn";
+            const favIMG = document.createElement("img");
+            favIMG.src = fav.img;
+            favIMG.alt = fav.title;
+            favIMG.classList.add("card-img");
 
-        //Wrap the delete button and card header in a div
-        const titleDeleteWrap = document.createElement("div");
-        titleDeleteWrap.classList.add("card_textwrap");
-        titleDeleteWrap.appendChild(favTitle);
-        titleDeleteWrap.appendChild(deleteBtn);
+            const favTitle = document.createElement("h3");
+            favTitle.textContent = fav.title;
+            favTitle.classList.add("card-title");
 
-         // Append elements to cardContent
-        cardContent.appendChild(favIMG);
-        cardContent.appendChild(titleDeleteWrap);
+            const deleteBtn = document.createElement("button");
+            deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            deleteBtn.id = "del_btn";
 
-        // Append cardContent to listItem
-        listItem.appendChild(cardContent);
+            //Wrap the delete button and card header in a div
+            const titleDeleteWrap = document.createElement("div");
+            titleDeleteWrap.classList.add("card_textwrap");
+            titleDeleteWrap.appendChild(favTitle);
+            titleDeleteWrap.appendChild(deleteBtn);
 
-        // Append listItem to favContainer
-        favContainer.appendChild(listItem);
-    });
+            // Append elements to cardContent
+            cardContent.appendChild(favIMG);
+            cardContent.appendChild(titleDeleteWrap);
+
+            // Append cardContent to listItem
+            listItem.appendChild(cardContent);
+
+            // Append listItem to favContainer
+            favContainer.appendChild(listItem);
+        });
+    }
 }
 
 //Add to favorites
-favBtn.addEventListener("click", function(){
+favBtn.addEventListener("click", function () {
     const favDate = dateForm.querySelector("input").value;
     const favTitle = h1Title.textContent;
     const favIMG = mainIMG.src;
 
     // Check if the APOD is already in favorites
     const isFavorite = favorites.find(fav => fav.date === favDate);
-    if(isFavorite){
-        alert("APOD already in favorites!");
+    if (isFavorite) {
+        alert("This picture of the day is already in your favorites!");
     } else {
-        favorites.push({date: favDate, title: favTitle, img: favIMG});
+        favorites.push({
+            date: favDate,
+            title: favTitle,
+            img: favIMG
+        });
         console.log(favorites);
         renderFavorites();
     }
