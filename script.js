@@ -1,14 +1,28 @@
 // NASA APOD API
 const APIKey = "MEXwV56G5zETZFb2qQLyhMd3Wouk82TtbEAmEVgF";
 
+//DOM Elements - Forms
 const dateForm = document.getElementById("date-input");
 const searchBtn = document.getElementById("search-btn");
 
+//DOM Elements - APOD Data
 const result = document.getElementById("apod_result");
 const mainIMG = document.getElementById("APOD_IMG");
 const h1Title = document.getElementById("apod_title");
 const attribute = document.getElementById("apod_attr");
 const description = document.getElementById("apod_details");
+
+//DOM Elements - Favorites
+const favBtn = document.getElementById("fav_btn");
+const favContainer = document.getElementById("APOD_FAV");
+
+//Empty array
+let favorites = [];
+
+//Show default message when there are no favorites
+const defaultFav = document.createElement("p");
+defaultFav.textContent = "No favorite APOD has been added yet!";
+favContainer.appendChild(defaultFav);
 
 // Set default date to current day
 const today = new Date();
@@ -31,13 +45,9 @@ function fetchAPOD(date) {
                 mainIMG.alt = data.title;
                 mainIMG.classList.remove('nasa-logo'); // Remove the class if it was previously added
 
-                // Remove any existing event listeners
-                const newMainIMG = mainIMG.cloneNode(true);
-                mainIMG.parentNode.replaceChild(newMainIMG, mainIMG);
-
                 // Make the image clickable to view HD version
-                newMainIMG.style.cursor = 'pointer';
-                newMainIMG.addEventListener("click", function () {
+                mainIMG.style.cursor = 'pointer';
+                mainIMG.onclick = () => {
                     const overlay = document.createElement("div");
                     overlay.classList.add('overlay');
 
@@ -64,10 +74,8 @@ function fetchAPOD(date) {
 
                     // Append overlay to body
                     document.body.appendChild(overlay);
-                });
-
+                };
             } else {
-
                 // If media type is not an image, display NASA logo
                 mainIMG.src = "https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg";
                 mainIMG.alt = "NASA Logo";
@@ -77,12 +85,10 @@ function fetchAPOD(date) {
                 mainIMG.style.cursor = 'default';
                 mainIMG.onclick = null;
             }
-
             h1Title.textContent = data.title;
             attribute.textContent = data.copyright || "Public Domain";
             description.textContent = data.explanation;
         })
-        
         .catch(error => {
             console.error("Error fetching APOD data:", error);
         });
@@ -104,3 +110,76 @@ dateForm.addEventListener("submit", function(e) {
         console.log("Please enter a valid date!");
     }
 });
+
+//Delete item from the array
+favContainer.addEventListener("click", function(e) {
+    if (e.target.closest("button") && e.target.closest("button").id === "del_btn") {
+        const favTitle = e.target.closest("div").querySelector("h3").textContent;
+        const favIndex = favorites.findIndex(fav => fav.title === favTitle);
+        if (favIndex !== -1) {
+            favorites.splice(favIndex, 1);
+            renderFavorites();
+            console.log("Item deleted from favorites!");
+            console.log(favorites);
+        }
+    }
+});
+
+// Render favorites in the UL container
+function renderFavorites(){
+    favContainer.innerHTML = "";
+    favorites.forEach(fav => {
+        
+        const listItem = document.createElement("li");
+        listItem.classList.add("card");
+        
+        const cardContent = document.createElement("div");
+        cardContent.classList.add("card-content");
+
+        const favIMG = document.createElement("img");
+        favIMG.src = fav.img;
+        favIMG.alt = fav.title;
+        favIMG.classList.add("card-img");
+
+        const favTitle = document.createElement("h3");
+        favTitle.textContent = fav.title;
+        favTitle.classList.add("card-title");
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        deleteBtn.id = "del_btn";
+
+        //Wrap the delete button and card header in a div
+        const titleDeleteWrap = document.createElement("div");
+        titleDeleteWrap.classList.add("card_textwrap");
+        titleDeleteWrap.appendChild(favTitle);
+        titleDeleteWrap.appendChild(deleteBtn);
+
+         // Append elements to cardContent
+        cardContent.appendChild(favIMG);
+        cardContent.appendChild(titleDeleteWrap);
+
+        // Append cardContent to listItem
+        listItem.appendChild(cardContent);
+
+        // Append listItem to favContainer
+        favContainer.appendChild(listItem);
+    });
+}
+
+//Add to favorites
+favBtn.addEventListener("click", function(){
+    const favDate = dateForm.querySelector("input").value;
+    const favTitle = h1Title.textContent;
+    const favIMG = mainIMG.src;
+
+    // Check if the APOD is already in favorites
+    const isFavorite = favorites.find(fav => fav.date === favDate);
+    if(isFavorite){
+        alert("APOD already in favorites!");
+    } else {
+        favorites.push({date: favDate, title: favTitle, img: favIMG});
+        console.log(favorites);
+        renderFavorites();
+    }
+})
