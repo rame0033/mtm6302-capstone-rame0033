@@ -24,6 +24,9 @@ As you load the main page, the default value of the `date input` will be the cur
 
 - Challenges have been encountered especially when doing the styles for the application. So what I did is to add placeholders for the mean time. This helped me to set proper height and width specifically for images and the 'favorites' item card. 
 
+### UPDATE
+
+- User can now click the main image in the container and an overlay modal will appear showing the larger version of the main image file.
 
 
 ### Resources
