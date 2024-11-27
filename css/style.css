@@ -131,7 +131,7 @@ main p{
 }
 
 /* fav btn */
-.fav_btn button{
+#fav_btn{
     padding:0.5rem 1rem;
     margin-top:1.5rem;
     border-radius:0.5rem;
@@ -143,7 +143,7 @@ main p{
 }
 
 /* fav btn active*/
-.fav_btn button:active{
+#fav_btn:active{
     transform: scale(0.9);
 }
 
