@@ -96,6 +96,10 @@ form button:active{
     justify-content: center;
 }
 
+#APOD_IMG.nasa-logo{
+    width:400px;
+}
+
 /* APOD IMG */
 #APOD_IMG{
     width:100%;
