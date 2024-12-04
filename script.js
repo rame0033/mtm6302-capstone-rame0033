@@ -240,18 +240,19 @@ favContainer.addEventListener("click", function (e) {
             description.textContent = fav.explanation || "No description available."; // Ensure the property exists
 
             //Adding a condition to maintain image size for NASA LOGO
-            if(fav.img === "https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg") {
+            if (fav.img === "https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg") {
                 mainIMG.classList.add('nasa-logo'); // Add the class to the logo and apply the styling set in CSS
+                mainIMG.style.cursor = 'default'; // Remove the cursor pointer
+                mainIMG.onclick = null; // Remove the click event
             } else {
-             mainIMG.classList.remove('nasa-logo'); // Remove the class if it was previously added - ensure the image is displayed in desired aspect ratio
-             
-            // Make the image clickable to view HD version
-            mainIMG.style.cursor = 'pointer';
-            mainIMG.onclick = () => {
-                 showHDImage(fav.hdurl)
+                mainIMG.classList.remove('nasa-logo'); // Remove the class if it was previously added - ensure the image is displayed in desired aspect ratio
+                // Make the image clickable to view HD version
+                mainIMG.style.cursor = 'pointer';
+                mainIMG.onclick = () => {
+                    showHDImage(fav.hdurl)
+                }
             }
         }
-    }
     }
 });
 
