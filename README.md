@@ -24,6 +24,8 @@ As you load the main page, the default value of the `date input` will be the cur
 
 - Challenges have been encountered especially when doing the styles for the application. So what I did is to add placeholders for the mean time. This helped me to set proper height and width specifically for images and the 'favorites' item card. 
 
+### Update (December 4, 2024)
+
 - Another challenge was encountered since there was a redundancy in the code function in stored main image for the latest date, and the stored favorite main image. The overlay function has been refactored to ensure there is no redundancy in the blocks for new image and favorite image. See [latest commit](https://github.com/rame0033/mtm6302-capstone-rame0033/commit/a1e1f58983b3b4ce3e59dcc942af617d86f5aa0e) `line 36-65 marked on green` and `line 58-83 and 240-266 marked on red` for reference.
 
 - Lastly, I saw that the class for NASA logo has been a default class also for images. For context, the NASA logo has its own preference of styling in case the provided APOD has no image but the class has been a default for the favorite image being shown in the main container so it may appear smaller. To fix, I set a condition where the class name "nasa-logo" will be applied if the image source shown in the main container is the source file of the logo.
