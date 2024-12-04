@@ -33,6 +33,36 @@ const defaultDate = `${yyyy}-${mm}-${dd}`;
 
 dateForm.querySelector("input").value = defaultDate;
 
+// Function to show full image on click
+function showHDImage(hdurl) {
+    const overlay = document.createElement("div");
+    overlay.classList.add('overlay');
+
+    const hdContainer = document.createElement("div");
+    hdContainer.classList.add('hd-container');
+
+    const hdIMG = document.createElement("img");
+    hdIMG.src = hdurl;
+
+    // Append image to overlay
+    hdContainer.appendChild(hdIMG);
+    overlay.appendChild(hdContainer);
+
+    // Add close button
+    const closeButton = document.createElement("button");
+    closeButton.innerHTML = '<i class="fa-solid fa-square-xmark"></i>';
+    closeButton.classList.add('close-button');
+    closeButton.addEventListener("click", function () {
+        overlay.remove();
+    });
+
+    // Append close button to overlay
+    overlay.appendChild(closeButton);
+
+    // Append overlay to body
+    document.body.appendChild(overlay);
+}
+
 // Fetch and display APOD data
 async function fetchAPOD(date) {
     const url = `https://api.nasa.gov/planetary/apod?api_key=${APIKey}&date=${date}`;
@@ -55,32 +85,7 @@ async function fetchAPOD(date) {
             // Make the image clickable to view HD version
             mainIMG.style.cursor = 'pointer';
             mainIMG.onclick = () => {
-                const overlay = document.createElement("div");
-                overlay.classList.add('overlay');
-
-                const hdContainer = document.createElement("div");
-                hdContainer.classList.add('hd-container');
-
-                const hdIMG = document.createElement("img");
-                hdIMG.src = data.hdurl;
-
-                // Append image to overlay
-                hdContainer.appendChild(hdIMG);
-                overlay.appendChild(hdContainer);
-
-                // Add close button
-                const closeButton = document.createElement("button");
-                closeButton.innerHTML = '<i class="fa-solid fa-square-xmark"></i>';
-                closeButton.classList.add('close-button');
-                closeButton.addEventListener("click", function () {
-                    overlay.remove();
-                });
-
-                // Append close button to overlay
-                overlay.appendChild(closeButton);
-
-                // Append overlay to body
-                document.body.appendChild(overlay);
+                showHDImage(data.hdurl);
             };
         } else {
             // If media type is not an image, display NASA logo
@@ -234,42 +239,24 @@ favContainer.addEventListener("click", function (e) {
             attribute.textContent = fav.attribute || "Public Domain"; // Ensure the property exists
             description.textContent = fav.explanation || "No description available."; // Ensure the property exists
 
+            //Adding a condition to maintain image size for NASA LOGO
+            if(fav.img === "https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg") {
+                mainIMG.classList.add('nasa-logo'); // Add the class to the logo and apply the styling set in CSS
+            } else {
+             mainIMG.classList.remove('nasa-logo'); // Remove the class if it was previously added - ensure the image is displayed in desired aspect ratio
+             
             // Make the image clickable to view HD version
             mainIMG.style.cursor = 'pointer';
             mainIMG.onclick = () => {
-                const overlay = document.createElement("div");
-                overlay.classList.add('overlay');
-
-                const hdContainer = document.createElement("div");
-                hdContainer.classList.add('hd-container');
-
-                const hdIMG = document.createElement("img");
-                hdIMG.src = fav.hdurl; // Use the HD URL from the favorite item
-
-                // Append image to overlay
-                hdContainer.appendChild(hdIMG);
-                overlay.appendChild(hdContainer);
-
-                // Add close button
-                const closeButton = document.createElement("button");
-                closeButton.innerHTML = '<i class="fa-solid fa-square-xmark"></i>';
-                closeButton.classList.add('close-button');
-                closeButton.addEventListener("click", function () {
-                    overlay.remove();
-                });
-
-                // Append close button to overlay
-                overlay.appendChild(closeButton);
-
-                // Append overlay to body
-                document.body.appendChild(overlay);
-            };
+                 showHDImage(fav.hdurl)
+            }
         }
+    }
     }
 });
 
 // Load favorites from localStorage on page load
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     loadFavorites();
     fetchAPOD(defaultDate); // Ensure APOD data is fetched after loading favorites
 });
