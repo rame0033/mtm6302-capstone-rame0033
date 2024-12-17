@@ -43,6 +43,7 @@ function showHDImage(hdurl) {
 
     const hdIMG = document.createElement("img");
     hdIMG.src = hdurl;
+    hdIMG.alt = h1Title.textContent; // Use the title of the APOD as the alt text
 
     // Append image to overlay
     hdContainer.appendChild(hdIMG);
@@ -52,6 +53,7 @@ function showHDImage(hdurl) {
     const closeButton = document.createElement("button");
     closeButton.innerHTML = '<i class="fa-solid fa-square-xmark"></i>';
     closeButton.classList.add('close-button');
+    closeButton.setAttribute('aria-label', 'Close HD image');
     closeButton.addEventListener("click", function () {
         overlay.remove();
     });
