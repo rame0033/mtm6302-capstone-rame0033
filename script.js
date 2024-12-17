@@ -179,6 +179,7 @@ function renderFavorites() {
             const deleteBtn = document.createElement("button");
             deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
             deleteBtn.id = "del_btn";
+            deleteBtn.setAttribute('aria-label', 'Delete favorite');
 
             //Wrap the delete button and card header in a div
             const titleDeleteWrap = document.createElement("div");
